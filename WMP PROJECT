@@ -1,0 +1,18 @@
+import pandas as pd
+from pulp import *
+
+# Import Nutrition Facts
+nutrition = pd.read_excel('Nutrition Facts.xlsx', index_col = 0)
+# Import Costs
+costs = pd.read_excel('Costs.xlsx')
+dict_costs = dict(zip(costs['Ingredients'], costs['Costs']))
+
+# Variables
+variables = ['Chicken', 'Beef', 'Mutton', 'Rice', 'Wheat bran', 'Corn', 'Peanuts']
+
+# Initialize Class
+model = LpProblem("Optimize your Protein Bar", LpMinimize)
+
+# Create Decision Variables
+x = LpVariable.dicts("Qty", [j for j in variables],
+                     lowBound=0, upBound=None, cat='continuous')
